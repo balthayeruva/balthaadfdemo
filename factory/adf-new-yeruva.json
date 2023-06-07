@@ -1,0 +1,9 @@
+{
+	"name": "adf-new-yeruva",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c49b0ea3-645a-4b78-9a3a-521f817ccd16",
+		"tenantId": "206a75c1-369c-4e80-92de-67c26427e71c"
+	}
+}

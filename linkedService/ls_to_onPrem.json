@@ -1,0 +1,16 @@
+{
+	"name": "ls_to_onPrem",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=LAPTOP-9TPVP8Q2;initial catalog=70-461;user id=hyderabad",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlYzI5MTgwNy1kMjY1LTQ5NTUtOTEzOS0wOGQ1ZWQyMDcyZTgiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "new-selfhosted",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
