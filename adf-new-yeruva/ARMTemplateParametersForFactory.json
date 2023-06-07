@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-new-yeruva"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"ls_to_azure_sql_connectionString": {
+			"value": ""
+		},
+		"ls_to_blob_connectionString": {
+			"value": ""
+		},
+		"ls_to_onPrem_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://yeruvadatalake.dfs.core.windows.net/"
+		},
+		"ls_to_http_properties_typeProperties_url": {
+			"value": "https://upload.wikimedia.org"
+		},
+		"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/f13f4ae7-b396-4d5b-8073-87e9cabe685e/resourcegroups/practice1/providers/Microsoft.DataFactory/factories/adf-practice-yeruva/integrationruntimes/integrationRuntime1"
+		}
+	}
+}
