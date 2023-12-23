@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select * from dbo.emp where name = ',\n'''',\npipeline().parameters.p_name,\n'''')",
+							"value": "@concat('select * from dbo.emp where emp_name = ',\n'''',\npipeline().parameters.p_name,\n'''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -77,7 +77,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('update dbo.emp set age = ',\nvariables('v_age'),' where name = ',\n'''',\npipeline().parameters.p_name,\n'''')",
+							"value": "@concat('update dbo.emp set age = ',\nvariables('v_age'),' where emp_name = ',\n'''',\npipeline().parameters.p_name,\n'''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
