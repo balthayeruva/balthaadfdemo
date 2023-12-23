@@ -5,6 +5,15 @@
 		"factoryName": {
 			"value": "baltha-adf"
 		},
+		"ln_adls_accountKey": {
+			"value": ""
+		},
+		"ln_azure_sqldb_connectionString": {
+			"value": ""
+		},
+		"ln_adls_properties_typeProperties_url": {
+			"value": "https://balthaadls.dfs.core.windows.net/"
+		},
 		"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
 			"value": "/subscriptions/f13f4ae7-b396-4d5b-8073-87e9cabe685e/resourcegroups/practice1/providers/Microsoft.DataFactory/factories/adf-practice-yeruva/integrationruntimes/integrationRuntime1"
 		},

@@ -7,6 +7,18 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "baltha-adf"
 		},
+		"ln_adls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ln_adls'"
+		},
+		"ln_azure_sqldb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ln_azure_sqldb'"
+		},
+		"ln_adls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://balthaadls.dfs.core.windows.net/"
+		},
 		"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/f13f4ae7-b396-4d5b-8073-87e9cabe685e/resourcegroups/practice1/providers/Microsoft.DataFactory/factories/adf-practice-yeruva/integrationruntimes/integrationRuntime1"
@@ -37,6 +49,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ln_adls_accountKey": {
+						"value": "[parameters('ln_adls_accountKey')]"
+					},
+					"ln_azure_sqldb_connectionString": {
+						"value": "[parameters('ln_azure_sqldb_connectionString')]"
+					},
+					"ln_adls_properties_typeProperties_url": {
+						"value": "[parameters('ln_adls_properties_typeProperties_url')]"
 					},
 					"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('new-selfhosted_properties_typeProperties_linkedInfo_resourceId')]"
