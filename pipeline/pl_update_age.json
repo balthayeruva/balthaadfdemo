@@ -1,0 +1,105 @@
+{
+	"name": "pl_update_age",
+	"properties": {
+		"activities": [
+			{
+				"name": "get employee",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from emp where name = ','''',\npipeline().parameters.p_name,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_sql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set age",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "get employee",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_age",
+					"value": {
+						"value": "@string(sub(int(formatDateTime(utcNow(),'yyyy')),\nint(formatDateTime(activity('get employee').output.firstrow.dob,'yyyy')))\n)\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "update employee",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Set age",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n    'update dbo.emp set age = ',variables('v_age'),\n    'where name = ',\n    '''',pipeline().parameters.p_name,''''\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_sql",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"p_name": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"v_age": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
