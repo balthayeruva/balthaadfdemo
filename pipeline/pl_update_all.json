@@ -88,7 +88,14 @@
 						{
 							"name": "Set age",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "reset age",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"secureOutput": false,
 								"secureInput": false
@@ -98,6 +105,23 @@
 								"variableName": "v_age",
 								"value": {
 									"value": "@string(sub(int(formatDateTime(utcNow(),'yyyy')),\nint(formatDateTime(item().Dob,'yyyy')))\n)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "reset age",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_age",
+								"value": {
+									"value": "@concat('')",
 									"type": "Expression"
 								}
 							}
