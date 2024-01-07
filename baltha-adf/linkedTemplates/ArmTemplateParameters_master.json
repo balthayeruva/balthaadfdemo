@@ -11,11 +11,11 @@
 		"ln_azure_sqldb_connectionString": {
 			"value": ""
 		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://api.publicapis.org/entries"
+		},
 		"ln_adls_properties_typeProperties_url": {
 			"value": "https://balthaadls.dfs.core.windows.net/"
-		},
-		"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
-			"value": "/subscriptions/f13f4ae7-b396-4d5b-8073-87e9cabe685e/resourcegroups/practice1/providers/Microsoft.DataFactory/factories/adf-practice-yeruva/integrationruntimes/integrationRuntime1"
 		},
 		"containerUri": {
 			"value": ""

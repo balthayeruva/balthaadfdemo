@@ -15,13 +15,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ln_azure_sqldb'"
 		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.publicapis.org/entries"
+		},
 		"ln_adls_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://balthaadls.dfs.core.windows.net/"
-		},
-		"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/f13f4ae7-b396-4d5b-8073-87e9cabe685e/resourcegroups/practice1/providers/Microsoft.DataFactory/factories/adf-practice-yeruva/integrationruntimes/integrationRuntime1"
 		},
 		"containerUri": {
 			"type": "string",
@@ -56,11 +56,11 @@
 					"ln_azure_sqldb_connectionString": {
 						"value": "[parameters('ln_azure_sqldb_connectionString')]"
 					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
 					"ln_adls_properties_typeProperties_url": {
 						"value": "[parameters('ln_adls_properties_typeProperties_url')]"
-					},
-					"new-selfhosted_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('new-selfhosted_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
