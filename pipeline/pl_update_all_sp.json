@@ -158,7 +158,7 @@
 							"typeProperties": {
 								"variableName": "v_row_processed",
 								"value": {
-									"value": "@activity('get employee').output.firstrow.rows_processed",
+									"value": "@activity('update emp').output.firstRow.rows_processed",
 									"type": "Expression"
 								}
 							}
