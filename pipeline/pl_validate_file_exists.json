@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select \nmax(case when property_name = 'container_name' then property_value end) container_name,\nmax(case when property_name = 'folder_name' then property_value end) folder_name,\nmax(case when property_name = 'file_name' then property_value end) file_name\nfrom [dbo].[etl_metadata_config]\n",
+						"sqlReaderQuery": {
+							"value": "@concat('select \n        max(case when property_name = ''container_name'' then property_value end) container_name,\n        max(case when property_name = ''folder_name'' then property_value end) folder_name,\n        max(case when property_name = ''file_name'' then property_value end) file_name\nfrom [dbo].[etl_metadata_config] where etl_job_name = ', \n'''',pipeline().parameters.p_etl_job_name,'''')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -29,6 +32,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"p_etl_job_name": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
