@@ -166,7 +166,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "remove file extensions",
+						"activity": "set tempfilelist array ",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -482,6 +482,30 @@
 				"userProperties": [],
 				"typeProperties": {
 					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "set tempfilelist array",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "remove file extensions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_temp_filelist",
+					"value": {
+						"value": "@variables('v_filelist')",
+						"type": "Expression"
+					}
 				}
 			}
 		],
