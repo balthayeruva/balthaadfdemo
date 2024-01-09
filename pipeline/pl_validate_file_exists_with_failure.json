@@ -137,6 +137,26 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "set filelist array",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "add files to list",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_filelist",
+								"value": {
+									"value": "@substring(item().name,0 ,indexOf(item().name,'.'))\n",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -480,6 +500,12 @@
 			},
 			"v_all_files_exists": {
 				"type": "String"
+			},
+			"v_filelist": {
+				"type": "Array"
+			},
+			"v_temp_filelist": {
+				"type": "Array"
 			}
 		},
 		"annotations": []
