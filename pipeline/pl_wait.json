@@ -1,0 +1,52 @@
+{
+	"name": "pl_wait",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "get metadata confiq",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": {
+						"value": "@activity('get metadata confiq').output.firstRow.wait_time",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "get metadata confiq",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select \n        max(case when property_name = 'container_name' then property_value end) container_name,\n        max(case when property_name = 'folder_name' then property_value end) folder_name,\n        max(case when property_name = 'file_name' then property_value end) file_name,\n\t\t max(case when property_name = 'wait_time' then property_value end) wait_time\n\nfrom [dbo].[etl_metadata_config] where etl_job_name = 'load_emp_file'\n",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_sql",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
