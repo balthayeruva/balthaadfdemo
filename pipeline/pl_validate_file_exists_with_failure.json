@@ -455,7 +455,7 @@
 					{
 						"activity": "validate all files present",
 						"dependencyConditions": [
-							"Failed"
+							"Completed"
 						]
 					}
 				],
