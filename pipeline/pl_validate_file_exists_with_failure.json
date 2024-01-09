@@ -98,57 +98,9 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "original file list",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "v_tempfiles",
-								"value": {
-									"value": "@variables('v_files')",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "add files to list",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "original file list",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "v_files",
-								"value": {
-									"value": "@concat(variables('v_tempfiles'),\nsubstring(item().name,0 ,indexOf(item().name,'.')),'|'\n)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "set filelist array",
 							"type": "AppendVariable",
-							"dependsOn": [
-								{
-									"activity": "add files to list",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "v_filelist",
@@ -162,47 +114,11 @@
 				}
 			},
 			{
-				"name": "get unique file names",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "set tempfilelist array ",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('select distinct value as filename\nfrom string_split( ''',variables('v_files'),''',''|'')\nwhere trim(value) <> ''''\n    \n    ')",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_sqldb_sql",
-						"type": "DatasetReference"
-					},
-					"firstRowOnly": false
-				}
-			},
-			{
 				"name": "validate all files present",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "get unique file names",
+						"activity": "get distinct filelist",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -211,7 +127,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('get unique file names').output.value",
+						"value": "@variables('v_distinct_files')",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -234,7 +150,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"file_name": {
-											"value": "@concat(item().filename,'.csv')",
+											"value": "@concat(item(),'.csv')",
 											"type": "Expression"
 										},
 										"folder_name": {
@@ -274,7 +190,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"file_name": {
-											"value": "@concat(item().filename,'.ctl')",
+											"value": "@concat(item(),'.ctl')",
 											"type": "Expression"
 										},
 										"folder_name": {
@@ -314,7 +230,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"file_name": {
-											"value": "@concat(item().filename,'.csv.fin')",
+											"value": "@concat(item(),'.csv.fin')",
 											"type": "Expression"
 										},
 										"folder_name": {
@@ -354,7 +270,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"file_name": {
-											"value": "@concat(item().filename,'.ctl.fin')",
+											"value": "@concat(item(),'.ctl.fin')",
 											"type": "Expression"
 										},
 										"folder_name": {
@@ -485,7 +401,7 @@
 				}
 			},
 			{
-				"name": "set tempfilelist array",
+				"name": "get distinct filelist",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -501,9 +417,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "v_temp_filelist",
+					"variableName": "v_distinct_files",
 					"value": {
-						"value": "@variables('v_filelist')",
+						"value": "@union(variables('v_filelist'),variables('v_filelist'))",
 						"type": "Expression"
 					}
 				}
@@ -516,19 +432,13 @@
 			}
 		},
 		"variables": {
-			"v_files": {
-				"type": "String"
-			},
-			"v_tempfiles": {
-				"type": "String"
-			},
 			"v_all_files_exists": {
 				"type": "String"
 			},
 			"v_filelist": {
 				"type": "Array"
 			},
-			"v_temp_filelist": {
+			"v_distinct_files": {
 				"type": "Array"
 			}
 		},
