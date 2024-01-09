@@ -420,7 +420,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"message": {
-												"value": "all 4 files are not available",
+												"value": "@concat('all 4 files are not available fro the feed --> ',\nitem().filename)",
 												"type": "Expression"
 											},
 											"errorCode": "5001"
@@ -446,6 +446,22 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "do nothing",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "validate all files present",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
 				}
 			}
 		],
