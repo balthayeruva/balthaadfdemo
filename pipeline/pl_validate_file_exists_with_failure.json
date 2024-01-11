@@ -83,7 +83,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "get all files",
+						"activity": "filter_txt_files",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -421,6 +421,75 @@
 					"value": {
 						"value": "@union(variables('v_filelist'),variables('v_filelist'))",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "filter_txt_files",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "get all files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get all files').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(endswith(item().name,'.txt' ))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Delete files",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "do nothing",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_txt_file",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@activity('get file metadata config').output.firstRow.file_name",
+								"type": "Expression"
+							},
+							"folder_name": {
+								"value": "@activity('get file metadata config').output.firstRow.folder_name",
+								"type": "Expression"
+							}
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": false,
+						"wildcardFileName": {
+							"value": "@activity('get file metadata config').output.firstRow.file_name",
+							"type": "Expression"
+						},
+						"enablePartitionDiscovery": false
 					}
 				}
 			}
