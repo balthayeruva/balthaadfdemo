@@ -1,0 +1,37 @@
+{
+	"name": "ds_source_text_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "emp_20230608.txt",
+				"folderPath": "input",
+				"fileSystem": "lab-adf"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "age",
+				"type": "String"
+			},
+			{
+				"name": "Dob",
+				"type": "String"
+			}
+		]
+	}
+}
