@@ -12,6 +12,10 @@
 				"type": "AzureBlobFSLocation",
 				"folderPath": "output",
 				"fileSystem": "lab-adf"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Fastest"
 			}
 		},
 		"schema": {}
