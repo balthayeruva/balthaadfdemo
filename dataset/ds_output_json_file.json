@@ -1,0 +1,19 @@
+{
+	"name": "ds_output_json_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "output",
+				"fileSystem": "lab-adf"
+			}
+		},
+		"schema": {}
+	}
+}
