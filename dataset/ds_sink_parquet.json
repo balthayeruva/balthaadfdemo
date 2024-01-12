@@ -14,7 +14,7 @@
 				"folderPath": "output",
 				"fileSystem": "lab-adf"
 			},
-			"compressionCodec": "snappy"
+			"compressionCodec": "gzip"
 		},
 		"schema": []
 	}
