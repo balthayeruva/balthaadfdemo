@@ -47,7 +47,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_source_text_file",
+						"referenceName": "ds_input_source_big_csv",
 						"type": "DatasetReference"
 					}
 				],
