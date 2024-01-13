@@ -51,8 +51,7 @@
 						"referenceName": "Binary1_output",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder_name": "output",
-							"file_name": "emp_root.json"
+							"folder_name": "output"
 						}
 					}
 				]
