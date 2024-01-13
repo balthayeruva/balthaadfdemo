@@ -51,7 +51,8 @@
 						"referenceName": "Binary1_output",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder_name": "output"
+							"folder_name": "output",
+							"file_name": "any"
 						}
 					}
 				]
