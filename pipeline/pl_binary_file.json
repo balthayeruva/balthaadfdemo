@@ -20,6 +20,8 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": false,
+							"wildcardFolderPath": "input",
+							"wildcardFileName": "Region.txt",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
@@ -36,17 +38,17 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_binary_file",
+						"referenceName": "Binary1",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder_name": "input ",
-							"file_name": "Region.txt"
+							"folder_name": "input",
+							"file_name": "emp_root.txt"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_binary_file",
+						"referenceName": "Binary1_output",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder_name": "output",
