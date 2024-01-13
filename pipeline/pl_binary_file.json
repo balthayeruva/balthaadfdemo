@@ -19,7 +19,8 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": true
+							"recursive": false,
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -36,7 +37,11 @@
 				"inputs": [
 					{
 						"referenceName": "ds_binary_file",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folder_name": "input ",
+							"file_name": "emp_root.txt"
+						}
 					}
 				],
 				"outputs": [
