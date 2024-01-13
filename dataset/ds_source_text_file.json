@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "emp_20230607.csv",
-				"folderPath": "input",
+				"fileName": "emp_20230607.txt",
 				"fileSystem": "lab-adf"
 			},
 			"columnDelimiter": ",",
