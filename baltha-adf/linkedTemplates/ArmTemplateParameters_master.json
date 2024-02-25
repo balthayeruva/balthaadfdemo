@@ -5,17 +5,8 @@
 		"factoryName": {
 			"value": "baltha-adf"
 		},
-		"ln_adls_accountKey": {
-			"value": ""
-		},
 		"ln_azure_sqldb_connectionString": {
 			"value": ""
-		},
-		"RestService1_properties_typeProperties_url": {
-			"value": "https://api.publicapis.org/entries"
-		},
-		"ln_adls_properties_typeProperties_url": {
-			"value": "https://balthaadls.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"value": ""
