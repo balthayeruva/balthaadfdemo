@@ -7,9 +7,33 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "baltha-adf"
 		},
+		"SqlServer1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
+		},
 		"ln_azure_sqldb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ln_azure_sqldb'"
+		},
+		"ls_adls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_adls'"
+		},
+		"ls_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_blob'"
+		},
+		"ls_deltalake_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_deltalake'"
+		},
+		"ls_adls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://fmcgadls.dfs.core.windows.net/"
+		},
+		"ls_databricks_compute_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0228-161048-cofu0rt0"
 		},
 		"containerUri": {
 			"type": "string",
@@ -40,6 +64,24 @@
 					},
 					"ln_azure_sqldb_connectionString": {
 						"value": "[parameters('ln_azure_sqldb_connectionString')]"
+					},
+					"ls_adls_accountKey": {
+						"value": "[parameters('ls_adls_accountKey')]"
+					},
+					"ls_blob_connectionString": {
+						"value": "[parameters('ls_blob_connectionString')]"
+					},
+					"ls_deltalake_accessToken": {
+						"value": "[parameters('ls_deltalake_accessToken')]"
+					},
+					"SqlServer1_connectionString": {
+						"value": "[parameters('SqlServer1_connectionString')]"
+					},
+					"ls_adls_properties_typeProperties_url": {
+						"value": "[parameters('ls_adls_properties_typeProperties_url')]"
+					},
+					"ls_databricks_compute_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_databricks_compute_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},

@@ -5,8 +5,26 @@
 		"factoryName": {
 			"value": "baltha-adf"
 		},
+		"SqlServer1_connectionString": {
+			"value": ""
+		},
 		"ln_azure_sqldb_connectionString": {
 			"value": ""
+		},
+		"ls_adls_accountKey": {
+			"value": ""
+		},
+		"ls_blob_connectionString": {
+			"value": ""
+		},
+		"ls_deltalake_accessToken": {
+			"value": ""
+		},
+		"ls_adls_properties_typeProperties_url": {
+			"value": "https://fmcgadls.dfs.core.windows.net/"
+		},
+		"ls_databricks_compute_properties_typeProperties_existingClusterId": {
+			"value": "0228-161048-cofu0rt0"
 		},
 		"containerUri": {
 			"value": ""
