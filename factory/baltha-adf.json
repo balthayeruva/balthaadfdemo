@@ -1,0 +1,12 @@
+{
+	"name": "baltha-adf",
+	"properties": {
+		"globalParameters": {
+			"env": {
+				"type": "string",
+				"value": "dev"
+			}
+		}
+	},
+	"location": "eastus"
+}
