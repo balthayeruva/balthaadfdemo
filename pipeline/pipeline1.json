@@ -173,7 +173,10 @@
 											"value": "@activity('metadata_lookup').output.firstRow.source_file_path",
 											"type": "Expression"
 										},
-										"file_name": "*"
+										"file_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
 									}
 								},
 								"fieldList": [
