@@ -128,7 +128,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(length(activity('file_name_extension_check').output),0 )",
+						"value": "@greater(length(activity('get_source_file_names').output.childItems),0 )",
 						"type": "Expression"
 					}
 				}
@@ -170,7 +170,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"folder_name": {
-											"value": "@item().source_file_path",
+											"value": "@activity('metadata_lookup').output.firstRow.source_file_path",
 											"type": "Expression"
 										},
 										"file_name": "*"
