@@ -22,11 +22,10 @@
 					"value": "@dataset().file_name",
 					"type": "Expression"
 				},
-				"folderPath": {
+				"fileSystem": {
 					"value": "@dataset().folder_name",
 					"type": "Expression"
-				},
-				"fileSystem": "telecom"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
