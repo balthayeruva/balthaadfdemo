@@ -1,12 +1,12 @@
 {
-	"name": "ds_output_adls",
+	"name": "ds_adls_input",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_adls",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"container_name": {
+			"folder_name": {
 				"type": "string"
 			},
 			"file_name": {
@@ -22,16 +22,26 @@
 					"value": "@dataset().file_name",
 					"type": "Expression"
 				},
-				"fileSystem": {
-					"value": "@dataset().container_name",
+				"folderPath": {
+					"value": "@dataset().folder_name",
 					"type": "Expression"
-				}
+				},
+				"fileSystem": "telecom"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "city_code",
+				"type": "String"
+			},
+			{
+				"name": "city_name",
+				"type": "String"
+			}
+		]
 	}
 }

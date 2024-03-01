@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "metadata_lookup",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -30,11 +30,11 @@
 				}
 			},
 			{
-				"name": "Get Metadata1",
+				"name": "get_source_file_names",
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "metadata_lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -50,11 +50,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_blob_input",
+						"referenceName": "ds_adls_input",
 						"type": "DatasetReference",
 						"parameters": {
-							"container_name": {
-								"value": "@activity('Lookup1').output.firstRow.blob_source_container",
+							"folder_name": {
+								"value": "@activity('metadata_lookup').output.firstRow.source_file_path",
 								"type": "Expression"
 							},
 							"file_name": "*"
@@ -64,12 +64,217 @@
 						"childItems"
 					],
 					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
+						"type": "AzureBlobFSReadSettings",
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"
 					}
+				}
+			},
+			{
+				"name": "file_count_check",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "get_source_file_names",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(length(activity('get_source_file_names').output.childItems),0)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "file_name_extension_check",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "file_count_check",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_source_file_names').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@and(startswith(item().name,'telecom_dim'),endswith(item().name,'.csv'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "file_proper_format_count_check",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "file_name_extension_check",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(length(activity('file_name_extension_check').output),0 )",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "for_each_source_file",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "file_proper_format_count_check",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('file_name_extension_check').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "get_file_last_modified_time",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_adls_input",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@item().source_file_path",
+											"type": "Expression"
+										},
+										"file_name": "*"
+									}
+								},
+								"fieldList": [
+									"lastModified"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"modifiedDatetimeStart": {
+										"value": "@activity('metadata_lookup').output.firstRow.watermark_column",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						},
+						{
+							"name": "blob_to_azure_adls",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "get_file_last_modified_time",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_adls_input",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@item().source_file_path",
+											"type": "Expression"
+										},
+										"file_name": "*"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_output_adls",
+									"type": "DatasetReference",
+									"parameters": {
+										"container_name": {
+											"value": "@activity('metadata_lookup').output.firstRow.container_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
 				}
 			}
 		],
