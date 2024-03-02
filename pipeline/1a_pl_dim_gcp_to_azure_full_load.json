@@ -92,7 +92,7 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "failure_log_copy1",
+							"name": "No_files_available_to_ingest_log",
 							"type": "DatabricksNotebook",
 							"dependsOn": [],
 							"policy": {
@@ -115,7 +115,7 @@
 										"type": "Expression"
 									},
 									"logMessage": {
-										"value": "@concat('failed to copy ',item().name, 'from source to landing')",
+										"value": "no latest files available in source to ingest",
 										"type": "Expression"
 									},
 									"logTimeStamp": {
@@ -139,6 +139,23 @@
 							"linkedServiceName": {
 								"referenceName": "ls_databricks_compute",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "End_pipeline_no_files_to_ingest",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "No_files_available_to_ingest_log",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "no latest files available in source to ingest",
+								"errorCode": "no latest files available in source to ingest"
 							}
 						}
 					]
@@ -183,7 +200,76 @@
 					"expression": {
 						"value": "@greater(length(activity('get_source_file_names').output.childItems),0 )",
 						"type": "Expression"
-					}
+					},
+					"ifFalseActivities": [
+						{
+							"name": "No_proper_format_files_available_to_ingest_log_copy1",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/balthayeruva7@gmail.com/set-up/table_insertion/log_record_tbl_insert",
+								"baseParameters": {
+									"env": {
+										"value": "@pipeline().globalParameters.env",
+										"type": "Expression"
+									},
+									"loadId": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"logMessage": {
+										"value": "no latest files available in source to ingest",
+										"type": "Expression"
+									},
+									"logTimeStamp": {
+										"value": "@convertFromUtc(utcNow(),'Central Standard Time' )",
+										"type": "Expression"
+									},
+									"pipeLineName": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"status": {
+										"value": "failure",
+										"type": "Expression"
+									},
+									"triggerType": {
+										"value": "@pipeline().TriggerType",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_databricks_compute",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "End_pipeline_no_proper_format_files_to_ingest_copy1",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "No_proper_format_files_available_to_ingest_log_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "no proper format files available in source to ingest",
+								"errorCode": "no proper format files available in source to ingest"
+							}
+						}
+					]
 				}
 			},
 			{
@@ -475,7 +561,7 @@
 										"type": "Expression"
 									},
 									"gcp_file_last_modified_time": {
-										"value": "@convertTimeZone(addSeconds(activity('get_file_last_modified_time').output.lastModified, 1), 'Central Standard Time', 'yyyy-MM-dd HH:mm:ss')\n",
+										"value": "@convertTimeZone(addSeconds(activity('get_file_last_modified_time').output.lastModified, 1), 'UTC', 'Central Standard Time')\n\n",
 										"type": "Expression"
 									}
 								}
