@@ -89,7 +89,59 @@
 					"expression": {
 						"value": "@greater(length(activity('get_source_file_names').output.childItems),0)",
 						"type": "Expression"
-					}
+					},
+					"ifFalseActivities": [
+						{
+							"name": "failure_log_copy1",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/balthayeruva7@gmail.com/set-up/table_insertion/log_record_tbl_insert",
+								"baseParameters": {
+									"env": {
+										"value": "@pipeline().globalParameters.env",
+										"type": "Expression"
+									},
+									"loadId": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"logMessage": {
+										"value": "@concat('failed to copy ',item().name, 'from source to landing')",
+										"type": "Expression"
+									},
+									"logTimeStamp": {
+										"value": "@convertFromUtc(utcNow(),'Central Standard Time' )",
+										"type": "Expression"
+									},
+									"pipeLineName": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"status": {
+										"value": "failure",
+										"type": "Expression"
+									},
+									"triggerType": {
+										"value": "@pipeline().TriggerType",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_databricks_compute",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
 				}
 			},
 			{
@@ -387,6 +439,43 @@
 									},
 									"triggerType": {
 										"value": "@pipeline().TriggerType",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_databricks_compute",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "update_watermark_column",
+							"type": "DatabricksNotebook",
+							"dependsOn": [
+								{
+									"activity": "success_log_table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/balthayeruva7@gmail.com/databricks_notebooks/dbx_update_watermark_column",
+								"baseParameters": {
+									"job_id": {
+										"value": "@pipeline().parameters.job_id",
+										"type": "Expression"
+									},
+									"gcp_file_last_modified_time": {
+										"value": "@addSeconds(activity('get_file_last_modified_time').output,1 )",
 										"type": "Expression"
 									}
 								}
