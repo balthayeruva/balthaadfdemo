@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "1a_pl_dim_gcp_to_azure_full_load",
 	"properties": {
 		"activities": [
 			{
@@ -65,6 +65,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -184,6 +185,7 @@
 								],
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
 									"modifiedDatetimeStart": {
 										"value": "@activity('metadata_lookup').output.firstRow.watermark_column",
 										"type": "Expression"
