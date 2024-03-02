@@ -475,7 +475,7 @@
 										"type": "Expression"
 									},
 									"gcp_file_last_modified_time": {
-										"value": "@addSeconds(activity('get_file_last_modified_time').output.lastModified,1 )",
+										"value": "@convertFromUtc(addSeconds(activity('get_file_last_modified_time').output.lastModified,1 ),'central standard time' )",
 										"type": "Expression"
 									}
 								}
